@@ -1,26 +1,244 @@
+/* ============================================================
+   Al Hakam Tours & Rent A Car — Global Design System (Tailwind v4)
+   Fonts are loaded with next/font in layout.tsx (no render-blocking @import).
+   ============================================================ */
+
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ── Tailwind v4 theme tokens ─────────────────────────────── */
+@theme {
+  --color-obsidian: #111111;
+  --color-ink: #161616;
+  --color-charcoal: #2c2c2c;
+  --color-card: #1f1f1f;
+  --color-gold: #e5c158;
+  --color-gold-light: #f0d78a;
+  --color-gold-mid: #c9a84c;
+  --color-gold-dark: #b38f3e;
+  --color-off-white: #f5f5f5;
+  --color-text-gray: #d1d1d1;
+  --color-text-muted: #9a9a9a;
+  --color-accent-red: #ea4335;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --font-display: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --radius-card: 20px;
+
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-shine: shine 3.5s ease-in-out infinite;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+  @keyframes shine {
+    0% { transform: translateX(-120%) skewX(-20deg); }
+    60%, 100% { transform: translateX(220%) skewX(-20deg); }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ── Base ─────────────────────────────────────────────────── */
+@layer base {
+  :root {
+    color-scheme: dark;
+    --gold: #e5c158;
+    --gold-dark: #b38f3e;
+    --glass-bg: rgba(255, 255, 255, 0.035);
+    --glass-border: rgba(255, 255, 255, 0.08);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    background-color: var(--color-obsidian);
+    color: #fff;
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+
+  ::selection {
+    background: rgba(229, 193, 88, 0.35);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  /* Native date-picker icon visible on dark inputs */
+  input[type='date']::-webkit-calendar-picker-indicator {
+    filter: invert(0.8) sepia(1) saturate(4) hue-rotate(5deg);
+    cursor: pointer;
+  }
+
+  select option {
+    background: #1f1f1f;
+    color: #fff;
+  }
+}
+
+/* ── Scrollbar ────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #e5c158, #b38f3e); border-radius: 8px; }
+
+/* ── Components ───────────────────────────────────────────── */
+@layer components {
+  .gold-gradient {
+    background: linear-gradient(120deg, #f0d78a 0%, #e5c158 35%, #c9a84c 65%, #b38f3e 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .gold-gradient-bg {
+    background: linear-gradient(135deg, #f0d78a 0%, #e5c158 40%, #b38f3e 100%);
+  }
+
+  .glass-card {
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-card);
+  }
+
+  .glass-card-gold {
+    background: linear-gradient(160deg, rgba(229, 193, 88, 0.08), rgba(229, 193, 88, 0.02));
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(229, 193, 88, 0.22);
+    border-radius: var(--radius-card);
+  }
+
+  .luxury-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: #fff;
+    padding: 12px 16px;
+    font-size: 0.925rem;
+    transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  }
+  .luxury-input::placeholder { color: #7a7a7a; }
+  .luxury-input:focus {
+    outline: none;
+    border-color: var(--gold);
+    background: rgba(229, 193, 88, 0.05);
+    box-shadow: 0 0 0 4px rgba(229, 193, 88, 0.1);
+  }
+  .luxury-input[aria-invalid='true'] { border-color: rgba(234, 67, 53, 0.7); }
+
+  .field-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #9a9a9a;
+  }
+
+  .luxury-table th {
+    background: rgba(229, 193, 88, 0.07);
+    color: var(--gold);
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(229, 193, 88, 0.15);
+    white-space: nowrap;
+  }
+  .luxury-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: #d1d1d1;
+    font-size: 0.875rem;
+    vertical-align: middle;
+  }
+  .luxury-table tbody tr:hover td { background: rgba(229, 193, 88, 0.03); }
+
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(229, 193, 88, 0.4), transparent);
+  }
+
+  .mesh-bg {
+    background-color: var(--color-obsidian);
+    background-image:
+      radial-gradient(at 15% 10%, rgba(229, 193, 88, 0.07) 0px, transparent 45%),
+      radial-gradient(at 85% 85%, rgba(179, 143, 62, 0.06) 0px, transparent 45%);
+  }
+
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+  }
+
+  .navbar-blur {
+    background: rgba(17, 17, 17, 0.78);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    backdrop-filter: blur(20px) saturate(140%);
+    border-bottom: 1px solid rgba(229, 193, 88, 0.1);
+  }
+
+  .shimmer {
+    background: linear-gradient(90deg, #232323 25%, #303030 50%, #232323 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.6s infinite linear;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid rgba(229, 193, 88, 0.3);
+    background: rgba(229, 193, 88, 0.06);
+    color: var(--gold);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .text-balance { text-wrap: balance; }
+}
+
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+/* ── Accessibility: respect reduced-motion preference ─────── */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
